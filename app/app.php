@@ -31,6 +31,12 @@
         return $app['twig']->render("main_admin.html.twig", array('books' => $books, 'authors' => $authors));
     });
 
+    $app->get("/book/{id}", function($id) use($app){
+        $book = Book::find($id);
+        $book_authors = $book->getAuthors();
+        return $app['twig']->render("book.html.twig", array('book' => $book, 'authors' => $book_authors));
+        });
+
     $app->post("/book_added", function() use ($app){
         // create new book from user entry "add book"
         $title = $_POST['title'];
