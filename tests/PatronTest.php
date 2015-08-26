@@ -12,7 +12,7 @@
 
     class PatronTest extends PHPUnit_Framework_TestCase
     {
-        protected function tearDown()
-        {
-            Patron::deleteAll();
-        }
+        // protected function tearDown()
+        // {
+        //     Patron::deleteAll();
+        // }
