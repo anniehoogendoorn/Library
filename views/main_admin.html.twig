@@ -17,6 +17,13 @@
                     <ul>
                     {% for book in books %}
                         <li><a href="/book/{{ book.getId }}">{{ book.getTitle}}</a></li>
+
+                        {% set book_author = book.getAuthors %}
+                        <ul>
+                            {% for author in book_author %}
+                                <li>{{ author.getName }}</li>
+                            {% endfor %}
+                        </ul>
                     {% endfor %}
                     </ul>
 

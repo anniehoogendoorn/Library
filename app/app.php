@@ -40,6 +40,7 @@
         // possibly check that the author is already in the database - NOT NOW
         $name = $_POST['name'];
         $new_author = new Author($name);
+        $new_author->save();
         $new_book->addAuthor($new_author);
         $books = Book::getAll();
         $authors = Author::getAll();
