@@ -4,7 +4,7 @@
     * @backupStaticAttributes disabled
     */
     require_once "src/Author.php";
-    // require_once "src/Restaurant.php";
+    require_once "src/Book.php";
     $server = 'mysql:host=localhost;dbname=library_test';
     $username = 'root';
     $password = 'root';
@@ -15,6 +15,7 @@
         protected function tearDown()
         {
             Author::deleteAll();
+            Book::deleteAll();
         }
 
         function test_save()
@@ -70,6 +71,25 @@
             $this->assertEquals([], $result);
 
         }
+
+        function testAddBook()
+        {
+            //Arrange
+            $name = "Ben";
+            $test_author = new Author($name);
+            $test_author->save();
+
+            $book_name = "Intro to Art";
+            $test_book = new Book($book_name);
+            $test_book->save();
+
+            //Act
+            $test_author->addBook($test_book);
+
+            //Assert
+            $this->assertEquals($test_author->getBooks(), [$test_book]);
+        }
+
     }
 
 ?>

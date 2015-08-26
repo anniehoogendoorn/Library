@@ -4,6 +4,7 @@
     * @backupStaticAttributes disabled
     */
     require_once "src/Book.php";
+    require_once "src/Author.php";
     // require_once "src/Restaurant.php";
     $server = 'mysql:host=localhost;dbname=library_test';
     $username = 'root';
@@ -15,17 +16,18 @@
         protected function tearDown()
         {
             Book::deleteAll();
+            Author::deleteAll();
         }
 
         function test_save()
         {
             //Arrange
             $title = "History of Epicodus";
-            $author = "The Students";
-            $test_book = new Book($title, $author);
+            $test_book = new Book($title);
 
             //Act
             $test_book->save();
+            var_dump($test_book);
 
             //Assert
             $result = Book::getAll();
@@ -36,13 +38,11 @@
         {
             //Arrange
             $book_name = "Intro to Art";
-            $book_author = "ART101";
-            $test_book = new Book($book_name, $book_author);
+            $test_book = new Book($book_name);
             $test_book->save();
 
             $book_name2 = "Intro to Spanish";
-            $book_author2 = "SPN101";
-            $test_book2 = new Book($book_name2, $book_author2);
+            $test_book2 = new Book($book_name2);
             $test_book2->save();
 
             //Act
@@ -57,13 +57,11 @@
         {
             //Arrange
             $book_name = "Intro to Art";
-            $book_author = "ART101";
-            $test_book = new Book($book_name, $book_author);
+            $test_book = new Book($book_name);
             $test_book->save();
-
             $book_name2 = "Intro to Spanish";
             $book_author2 = "SPN101";
-            $test_book2 = new Book($book_name2, $book_author2);
+            $test_book2 = new Book($book_name2);
             $test_book2->save();
 
             //Act
@@ -79,13 +77,11 @@
         {
             //Arrange
             $book_name = "Intro to Art";
-            $book_author = "ART101";
-            $test_book = new Book($book_name, $book_author);
+            $test_book = new Book($book_name);
             $test_book->save();
 
             $book_name2 = "Intro to Spanish";
-            $book_author2 = "SPN101";
-            $test_book2 = new Book($book_name2, $book_author2);
+            $test_book2 = new Book($book_name2);
             $test_book2->save();
 
             //Act
@@ -100,8 +96,7 @@
         {
             //Arrange
             $book_name = "Intro to Art";
-            $book_author = "ART101";
-            $test_book = new Book($book_name, $book_author);
+            $test_book = new Book($book_name);
             $test_book->save();
 
             //Act
@@ -112,26 +107,50 @@
             $this->assertEquals("Intro to Fine Arts", $test_book->getTitle());
 
         }
+
+        function testAddAuthor()
+        {
+            //Arrange
+            $book_name = "Intro to Art";
+            $test_book = new Book($book_name);
+            $test_book->save();
+
+            $name = "Ben";
+            $test_author = new Author($name);
+            $test_author->save();
+
+            //Act
+            $test_book->addAuthor($test_author);
+
+            //Assert
+            $this->assertEquals($test_book->getAuthors(), [$test_author]);
+        }
+
+
         // function testDelete()
         // {
         //     //Arrange
-        //     $course_name = "Intro to Art";
-        //     $course_number = "ART101";
-        //     $test_course = new Course($course_name, $course_number);
-        //     $test_course->save();
+        //     $book_name = "Intro to Art";
+        //     $test_book = new Book($book_name);
+        //     $test_book->save();
         //
-        //     $name = "Ben";
-        //     $enroll_date = "0000-00-00";
-        //     $test_student = new Student($name, $enroll_date);
-        //     $test_student->save();
+        //     $book_name2 = "Everybody Poops";
+        //     $test_book2 = new Book($book_name2);
+        //     $test_book2->save();
+        //
+        //     $name = "Arty";
+        //     $test_author = new Author($name);
+        //     $test_author->save();
+        //
         //
         //     //Act
-        //     $test_course->addStudent($test_student);
-        //     $test_course->delete();
+        //     $test_book->addAuthor($test_author);
+        //     $test_book->delete();
         //
         //     //Assert
-        //     $this->assertEquals([], $test_student->getCourses());
+        //     $this->assertEquals([], $test_author->getBooks());
         // }
+
 
     }
 ?>

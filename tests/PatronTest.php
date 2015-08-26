@@ -12,7 +12,63 @@
 
     class PatronTest extends PHPUnit_Framework_TestCase
     {
-        // protected function tearDown()
-        // {
-        //     Patron::deleteAll();
-        // }
+        protected function tearDown()
+        {
+            Patron::deleteAll();
+        }
+
+        function test_save()
+        {
+            //Arrange
+            $name = "History of Epicodus";
+            $test_patron = new Patron($name);
+
+            //Act
+            $test_patron->save();
+            var_dump($test_patron);
+
+            //Assert
+            $result = Patron::getAll();
+            $this->assertEquals($test_patron, $result[0]);
+        }
+
+        function testGetAll()
+        {
+            //Arrange
+            $name = "Intro to Art";
+            $test_patron = new Patron($name);
+            $test_patron->save();
+
+            $name2 = "Intro to Spanish";
+            $test_patron2 = new Patron($name2);
+            $test_patron2->save();
+
+            //Act
+            $result = Patron::getAll();
+
+            //Assert
+            $this->assertEquals([$test_patron, $test_patron2], $result);
+
+        }
+
+        function testDeleteAll()
+        {
+            //Arrange
+            $name = "Intro to Art";
+            $test_patron = new Patron($name);
+            $test_patron->save();
+
+            $name2 = "Intro to Spanish";
+            $test_patron2 = new Patron($name2);
+            $test_patron2->save();
+
+            //Act
+            Patron::deleteAll();
+            $result = Patron::getAll();
+
+            //Assert
+            $this->assertEquals([], $result);
+
+        }
+    }
+?>

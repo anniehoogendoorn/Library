@@ -2,13 +2,11 @@
     class Book
     {
         private $title;
-        private $author;
         private $id;
 
-        function __construct($title, $author, $id = null)
+        function __construct($title, $id = null)
         {
             $this->title = $title;
-            $this->author = $author;
             $this->id = $id;
         }
 
@@ -22,16 +20,6 @@
             return $this->title;
         }
 
-        function setAuthor($new_author)
-        {
-            $this->author = (string) $new_author;
-        }
-
-        function getAuthor()
-        {
-            return $this->author;
-        }
-
         function getId()
         {
             return $this->id;
@@ -39,20 +27,43 @@
 
         function save()
         {
-            $GLOBALS['DB']->exec("INSERT INTO books (title, author) VALUES ('{$this->getTitle()}', '{$this->getAuthor()}');");
+            $GLOBALS['DB']->exec("INSERT INTO books (title) VALUES ('{$this->getTitle()}');");
             $this->id = $GLOBALS['DB']->lastInsertId();
 
         }
 
+        function addAuthor($author)
+        {
+            $GLOBALS['DB']->exec("INSERT INTO books_authors (book_id, author_id) VALUES ({$this->getId()}, {$author->getId()});");
+        }
+
+        function getAuthors()
+        {
+            $returned_authors = $GLOBALS['DB']->query("SELECT authors.* FROM
+                books JOIN books_authors ON (books.id = books_authors.book_id)
+                         JOIN authors ON (books_authors.author_id = authors.id)
+                         WHERE books.id = {$this->getId()};");
+
+            $authors = array();
+            foreach($returned_authors as $author) {
+                $name = $author['name'];
+                $id = $author['id'];
+                $new_author = new Author($name, $id);
+                array_push($authors, $new_author);
+            }
+            return $authors;
+        }
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
         static function getAll()
         {
             $returned_books = $GLOBALS['DB']->query("SELECT * FROM books;");
             $books = array();
             foreach($returned_books as $book) {
                 $book_title = $book['title'];
-                $author = $book['author'];
                 $id = $book['id'];
-                $new_book = new Book($book_title, $author, $id);
+                $new_book = new Book($book_title, $id);
                 array_push($books, $new_book);
             }
             return $books;

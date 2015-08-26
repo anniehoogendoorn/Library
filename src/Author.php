@@ -30,6 +30,32 @@
             $GLOBALS['DB']->exec("INSERT INTO authors (name) VALUES ('{$this->getName()}');");
             $this->id = $GLOBALS['DB']->lastInsertId();
         }
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+
+        function addBook($book)
+        {
+            $GLOBALS['DB']->exec("INSERT INTO books_authors (book_id, author_id) VALUES ({$book->getId()}, {$this->getId()});");
+        }
+
+        function getBooks()
+        {
+            $returned_books = $GLOBALS['DB']->query("SELECT books.* FROM
+                authors JOIN books_authors ON (authors.id = books_authors.author_id)
+                         JOIN books ON (books_authors.book_id = books.id)
+                         WHERE authors.id = {$this->getId()};");
+            $books = array();
+            foreach($returned_books as $book) {
+                $title = $book['title'];
+                $id = $book['id'];
+                $new_book = new Book($title, $id);
+                array_push($books, $new_book);
+            }
+            return $books;
+        }
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+
 
         static function getAll()
         {
