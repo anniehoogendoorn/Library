@@ -32,6 +32,27 @@
             $this->assertEquals($test_book, $result[0]);
         }
 
+        function testGetAll()
+        {
+            //Arrange
+            $book_name = "Intro to Art";
+            $book_author = "ART101";
+            $test_book = new Book($book_name, $book_author);
+            $test_book->save();
+
+            $book_name2 = "Intro to Spanish";
+            $book_author2 = "SPN101";
+            $test_book2 = new Book($book_name2, $book_author2);
+            $test_book2->save();
+
+            //Act
+            $result = Book::getAll();
+
+            //Assert
+            $this->assertEquals([$test_book, $test_book2], $result);
+
+        }
+
         function testDeleteAll()
         {
             //Arrange
