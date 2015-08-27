@@ -32,21 +32,21 @@
                     <input id="id" name="id" type="hidden" value="{{ book.getId() }}">
                     <label for="name">Enter a new author:</label>
                     <input id="name" name="name" type="text">
-                    <button type="submit" class="btn-md">Add author</button>
+                    <button type="submit" class="btn btn-info btn-md">Add author</button>
                 </form>
 
                 <h4>Update Book Title</h4>
                 <form action="/book/{{ book.getId }}" method="post">
                     <input name="_method" type="hidden" value="patch">
-                    <label for="name">Rename your book:</label>
-                    <input id="name" name="name" type="text">
-                    <button name="submit">Update</button>
+                    <label for="title">Rename your book:</label>
+                    <input id="name" name="title" type="text">
+                    <button name="submit" class="btn btn-info">Update</button>
                 </form>
 
 
             <br>
             <h4>Delete this book?</h4>
-            <form action="/delete_book/{{ book.getId }}" method="post">
+            <form action="/book/{{ book.getId }}" method="post">
                 <input type="hidden" name="_method" value="delete">
                 <button type="submit" class="btn-xs btn-danger">DELETE</button>
             </form>
@@ -64,6 +64,9 @@
                 </form>
                 <form action="/courses" method="get">
                     <button type="submit" class="btn-lg btn-primary" style="width:250px">Find a Book!</button>
+                </form>
+                <form action="/main_admin">
+                    <button type="submit" class="btn-lg btn-default">Back</button>
                 </form>
             </div>
 
