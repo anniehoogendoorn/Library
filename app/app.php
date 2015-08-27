@@ -1,7 +1,8 @@
 <?php
     require_once __DIR__."/../vendor/autoload.php";
     require_once __DIR__."/../src/Book.php";
-    //require_once __DIR__."/../src/Patron.php";
+    require_once __DIR__."/../src/Patron.php";
+    require_once __DIR__."/../src/Copy.php";
     require_once __DIR__."/../src/Author.php";
 
 
@@ -51,6 +52,7 @@
             $new_author->save();
             $new_book->addAuthor($new_author);
         }
+        $new_book->addCopies($_POST['copies']);
         $books = Book::getAll();
         $authors = Author::getAll();
         return $app['twig']->render("main_admin.html.twig", array('books' => $books, 'authors' => $authors));
@@ -61,7 +63,7 @@
     $app->get("/book/{id}", function($id) use($app){
         $book = Book::find($id);
         $book_authors = $book->getAuthors();
-        return $app['twig']->render("book.html.twig", array('book' => $book, 'authors' => $book_authors));
+        return $app['twig']->render("book.html.twig", array('book' => $book, 'authors' => $book_authors, 'copies' => count($book->getCopies())));
         });
 
     //ADD AUTHOR TO INDIVIDUAL BOOK PAGE
@@ -72,7 +74,7 @@
         $new_author->save();
         $find_book->addAuthor($new_author);
         $authors = $find_book->getAuthors();
-        return $app['twig']->render("book.html.twig", array('book' => $find_book, 'authors' => $authors));
+        return $app['twig']->render("book.html.twig", array('book' => $find_book, 'authors' => $authors, 'copies' => count($book->getCopies())));
     });
 
     //update book info
@@ -80,7 +82,7 @@
         $book = Book::find($id);
         $book->update($_POST['title']);
         $authors = $book->getAuthors();
-        return $app['twig']->render("book.html.twig", array('book' => $book, 'authors' => $authors));
+        return $app['twig']->render("book.html.twig", array('book' => $book, 'authors' => $authors, 'copies' => count($book->getCopies())));
     });
 
     //delete book info
@@ -116,7 +118,11 @@
         return $app['twig']->render('author.html.twig', array('author' => $author, 'books' => $books));
     });
 
-    
+    $app->delete("/author/{id}", function($id) use ($app){
+        $author = Author::find($id);
+        $author->delete();
+        return $app['twig']->render('main_admin.html.twig', array('author' => $author, 'books' => Book::getAll()));
+    });
 
 
 
