@@ -132,7 +132,5 @@
         return $app['twig']->render('main_admin.html.twig', array('author' => $author, 'books' => Book::getAll()));
     });
 
-
-
     return $app;
 ?>
