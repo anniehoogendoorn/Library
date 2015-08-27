@@ -49,6 +49,19 @@ class Copy
         $GLOBALS['DB']->exec("DELETE FROM copies;");
     }
 
+    static function find($search_id)
+    {
+        $found_copy = null;
+        $copies = Copy::getAll();
+        foreach($copies as $copy){
+            $copy_id = $copy->getId();
+            if($copy_id == $search_id){
+                $found_copy = $copy;
+            }
+        }
+        return $found_copy;
+    }
+
     function delete()
     {
         $GLOBALS['DB']->exec("DELETE FROM copies WHERE id = {$this->getId()};");

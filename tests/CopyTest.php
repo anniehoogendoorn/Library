@@ -76,6 +76,24 @@
             $this->assertEquals([], $result);
         }
 
+        function testFind()
+        {
+            //Arrange
+            $book_id = 1;
+            $test_copy = new Copy($book_id);
+            $test_copy->save();
+
+            $book_id2 = 2;
+            $test_copy2 = new Copy($book_id2);
+            $test_copy2->save();
+
+            //Act
+            $result = Copy::find($test_copy->getId());
+
+            //Assert
+            $this->assertEquals($test_copy, $result);
+        }
+
         function test_delete()
         {
             //Arrange
@@ -144,5 +162,6 @@
             //Assert
             $this->assertEquals($test_copy->getId(), $result->getCopyId());
         }
+
     }
 ?>

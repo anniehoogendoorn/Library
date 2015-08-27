@@ -72,6 +72,24 @@
 
         }
 
+        function test_find()
+        {
+            //Arrange
+            $name = "Intro to Art";
+            $test_author = new Author($name);
+            $test_author->save();
+
+            $name2 = "Intro to Spanish";
+            $test_author2 = new Author($name2);
+            $test_author2->save();
+
+            //Act
+            $result = Author::find($test_author->getId());
+
+            //Assert
+            $this->assertEquals($test_author, $result);
+        }
+
         function testAddBook()
         {
             //Arrange
