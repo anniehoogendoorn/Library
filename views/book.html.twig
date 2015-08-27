@@ -2,7 +2,6 @@
 <head>
     <title>Catalogue</title>
     <link href="css/custom.css" rel='stylesheet' type="text/css">
-    <link href="../../css/custom.css" rel='stylesheet' type="text/css">
     <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
 </head>
@@ -26,27 +25,34 @@
                     <p>Zero authors have written this book.</p>
                 {% endif %}
 
+                {% if copies > 0 %}
+                    <h4>There are {{ copies }} copies of {{ book.getTitle }}</h4>
+                {% endif %}
+
                 <br>
                 <h4>Choose authors to credit:</h4>
                 <form action="/book/{{ book.getId }}/add_author" method="post">
                     <input id="id" name="id" type="hidden" value="{{ book.getId() }}">
                     <label for="name">Enter a new author:</label>
                     <input id="name" name="name" type="text">
-                    <button type="submit" class="btn-md">Add author</button>
+                    <button type="submit" class="btn btn-info btn-md">Add author</button>
                 </form>
 
                 <h4>Update Book Title</h4>
                 <form action="/book/{{ book.getId }}" method="post">
-                    <input name="_method" type="hidden" value="patch">
-                    <label for="name">Rename your book:</label>
-                    <input id="name" name="name" type="text">
-                    <button name="submit">Update</button>
+                    <div class=form-group>
+                        <input name="_method" type="hidden" value="patch">
+                        <label for="title">Rename your book:</label>
+                        <input id="name" name="title" class="form-control" type="text" value="{{ book.getTitle }}">
+                        <label for="new_copies">Edit the amount of copies</label>
+                        <input id="new_copies" name="new_copies" class="form-control" type="number" value="{{ copies }}">
+                        <button name="submit" class="btn btn-info">Update</button>
+                    </div>
                 </form>
-
 
             <br>
             <h4>Delete this book?</h4>
-            <form action="/delete_book/{{ book.getId }}" method="post">
+            <form action="/book/{{ book.getId }}" method="post">
                 <input type="hidden" name="_method" value="delete">
                 <button type="submit" class="btn-xs btn-danger">DELETE</button>
             </form>
@@ -64,6 +70,9 @@
                 </form>
                 <form action="/courses" method="get">
                     <button type="submit" class="btn-lg btn-primary" style="width:250px">Find a Book!</button>
+                </form>
+                <form action="/main_admin">
+                    <button type="submit" class="btn-lg btn-default">Back</button>
                 </form>
             </div>
 

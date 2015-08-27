@@ -75,5 +75,30 @@
             $GLOBALS['DB']->exec("DELETE FROM authors;");
         }
 
+        static function find($search_id)
+        {
+            $found_author = null;
+            $authors = Author::getAll();
+            foreach($authors as $author){
+                $author_id = $author->getId();
+                if($author_id == $search_id){
+                    $found_author = $author;
+                }
+            }
+            return $found_author;
+        }
+
+        function update($new_author_name)
+        {
+            $GLOBALS['DB']->exec("UPDATE authors SET name = '{$new_author_name}' WHERE id ={$this->getId()};");
+            $this->setName($new_author_name);
+        }
+
+        function delete()
+        {
+            $GLOBALS['DB']->exec("DELETE FROM authors WHERE id = {$this->getId()};");
+            $GLOBALS['DB']->exec("DELETE FROM books_authors WHERE author_id = {$this->getId()};");
+        }
+
     }
 ?>
