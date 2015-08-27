@@ -107,5 +107,15 @@
             $copy = new Copy($book_id, $id);
             return $copy;
         }
+
+        function getPatron()
+        {
+            $query = $GLOBALS['DB']->query("SELECT * FROM patrons WHERE id = {$this->getPatronId()};");
+            $returned_patron = $query->fetchAll(PDO::FETCH_ASSOC);
+            $name = $returned_patron[0]['name'];
+            $id = $returned_patron[0]['id'];
+            $patron = new Patron($name, $id);
+            return $patron;
+        }
     }
 ?>

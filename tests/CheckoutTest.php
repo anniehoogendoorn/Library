@@ -149,5 +149,25 @@
             //Assert
             $this->assertEquals($test_copy, $result);
         }
+
+        function test_getPatron()
+        {
+            //Arrange
+            $name = "Phyllis the kind Grandma";
+            $test_patron = new Patron($name);
+            $test_patron->save();
+
+            $checked_in_status = 0;
+            $due_date = "2000 BC";
+            $copy_id = 1;
+            $test_checkout = new Checkout($checked_in_status, $due_date, $copy_id, $test_patron->getId());
+            $test_checkout->save();
+
+            //Act
+            $result = $test_checkout->getPatron();
+
+            //Assert
+            $this->assertEquals($test_patron, $result);
+        }
     }
 ?>
