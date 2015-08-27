@@ -90,12 +90,33 @@
         return $app['twig']->render("main_admin.html.twig", array('books' => Book::getAll()));
     });
 
+    //INDIVIDUAL AUTHOR PAGE
+    $app->get("/author/{id}", function($id) use ($app) {
+        $author = Author::find($id);
+        $books = $author->getBooks();
+        return $app['twig']->render('author.html.twig', array('author' => $author, "books" => $books));
+    });
 
+    //Add book on the individual author page
+    $app->post("/author/{id}/add_book", function($id) use ($app) {
+        $find_author = Author::find($id);
+        $title = $_POST['title'];
+        $new_book = new Book($title);
+        $new_book->save();
+        $find_author->addBook($new_book);
+        $books = $find_author->getBooks();
+        return $app['twig']->render('author.html.twig', array('author' => $find_author, 'books' => $books));
+    });
 
+    //Update author's name
+    $app->patch("/author/{id}", function($id) use ($app) {
+        $author = Author::find($id);
+        $author->update($_POST['title']);
+        $books = $author->getBooks();
+        return $app['twig']->render('author.html.twig', array('author' => $author, 'books' => $books));
+    });
 
-
-
-
+    
 
 
 
