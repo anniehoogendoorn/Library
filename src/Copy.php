@@ -66,5 +66,25 @@ class Copy
         return $new_book;
     }
 
+    function getCheckout()
+    {
+        $query = $GLOBALS['DB']->query("SELECT * FROM checkouts WHERE copy_id = {$this->getId()};");
+        $checkout = $query->fetchAll(PDO::FETCH_ASSOC);
+        $checked_in_status = $checkout[0]['checked_in_status'];
+        $due_date = $checkout[0]['due_date'];
+        $copy_id = $checkout[0]['copy_id'];
+        $patron_id = $checkout[0]['patron_id'];
+        $id = $checkout[0]['id'];
+        $new_checkout = new Checkout($checked_in_status, $due_date, $copy_id, $patron_id, $id);
+
+        return $new_checkout;
+    }
+
+    function addCheckout($patron)
+    {
+        $GLOBALS['DB']->exec("INSERT INTO checkouts (checked_in_status, due_date, copy_id, patron_id)
+            VALUES (0, ADDDATE(CURDATE(), 7), {$this->getId()}, {$patron->getId()});");
+    }
+
 }
  ?>
