@@ -99,6 +99,26 @@
             $GLOBALS['DB']->exec("DELETE FROM books_authors WHERE book_id={$this->getId()};");
         }
 
+        function addCopies($number)
+        {
+            for($i = 1; $i <= $number ; $i++){
+                $GLOBALS['DB']->exec("INSERT INTO copies (book_id) VALUES ({$this->getId()});");
+            }
+        }
+
+        function getCopies()
+        {
+            $returned_copies = $GLOBALS['DB']->query("SELECT * FROM copies WHERE book_id = {$this->getId()};");
+            $copies = array();
+            foreach ($returned_copies as $copy) {
+                $book_id = $copy['book_id'];
+                $id = $copy['id'];
+                $new_copy = new Copy($book_id, $id);
+                array_push($copies, $new_copy);
+            }
+            return $copies;
+        }
+
     }
 
  ?>

@@ -5,7 +5,7 @@
     */
     require_once "src/Book.php";
     require_once "src/Author.php";
-    // require_once "src/Restaurant.php";
+    require_once "src/Copy.php";
     $server = 'mysql:host=localhost;dbname=library_test';
     $username = 'root';
     $password = 'root';
@@ -17,6 +17,7 @@
         {
             Book::deleteAll();
             Author::deleteAll();
+            Copy::deleteAll();
         }
 
         function test_save()
@@ -151,6 +152,52 @@
             $this->assertEquals([], $test_author->getBooks());
         }
 
+        function test_addCopies()
+        {
+            //Arrange
+            $book_name = "Slaughterhouse-5";
+            $test_book = new Book($book_name);
+            $test_book->save();
 
+            //Act
+            $test_book->addCopies(1);
+            $test_copy = new Copy($test_book->getId());
+            $result = Copy::getAll();
+
+            //Assert
+            $this->assertEquals($test_copy->getBookId(), $result[0]->getBookId());
+        }
+
+        function test_addMultipleCopies()
+        {
+            //Arrange
+            $book_name = "Slaughterhouse-5";
+            $test_book = new Book($book_name);
+            $test_book->save();
+
+            //Act
+            $test_book->addCopies(5);
+            $test_copy = new Copy($test_book->getId());
+            $result = Copy::getAll();
+
+            //Assert
+            $this->assertEquals(5, count($result));
+        }
+
+        function test_getCopies()
+        {
+            //Arrange
+            $book_name = "The Martian";
+            $test_book = new Book($book_name);
+            $test_book->save();
+
+            //Act
+            $test_book->addCopies(4);
+            $test_copies = $test_book->getCopies();
+            $result = Copy::getAll();
+
+            //Assert
+            $this->assertEquals($test_copies, $result);
+        }
     }
 ?>

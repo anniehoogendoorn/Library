@@ -55,5 +55,16 @@ class Copy
         $GLOBALS['DB']->exec("DELETE FROM checkouts where copy_id = {$this->getId()};");
     }
 
+    function getBook()
+    {
+        $query = $GLOBALS['DB']->query("SELECT * FROM books WHERE id = {$this->getBookId()};");
+        $book = $query->fetchAll(PDO::FETCH_ASSOC);
+        $title = $book[0]['title'];
+        $id = $book[0]['id'];
+        $new_book = new Book($title, $id);
+
+        return $new_book;
+    }
+
 }
  ?>

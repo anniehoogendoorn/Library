@@ -4,7 +4,8 @@
     * @backupStaticAttributes disabled
     */
     require_once "src/Copy.php";
-    // require_once "src/Restaurant.php";
+    require_once "src/Book.php";
+
     $server = 'mysql:host=localhost;dbname=library_test';
     $username = 'root';
     $password = 'root';
@@ -15,6 +16,7 @@
         protected function tearDown()
         {
             Copy::deleteAll();
+            Book::deleteAll();
         }
 
         function test_save()
@@ -83,6 +85,20 @@
 
             //Assert
             $this->assertEquals([], $result);
+        }
+
+        function test_getBook()
+        {
+            //Arrange
+            $title = "Space Invaders";
+            $new_book = new Book($title);
+            $new_book->save();
+
+            //Act
+            $new_book->addCopies(4);
+            $result = $new_book->getCopies();
+
+            $this->assertEquals($new_book, $result[0]->getBook());
         }
     }
 ?>
