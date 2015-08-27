@@ -38,7 +38,6 @@ class Copy
         foreach($returned_copies as $copy) {
             $book_id = $copy['book_id'];
             $id = $copy['id'];
-            var_dump($id);
             $new_copy = new Copy($book_id, $id);
             array_push($copies, $new_copy);
         }
@@ -48,6 +47,12 @@ class Copy
     static function deleteAll()
     {
         $GLOBALS['DB']->exec("DELETE FROM copies;");
+    }
+
+    function delete()
+    {
+        $GLOBALS['DB']->exec("DELETE FROM copies WHERE id = {$this->getId()};");
+        $GLOBALS['DB']->exec("DELETE FROM checkouts where copy_id = {$this->getId()};");
     }
 
 }

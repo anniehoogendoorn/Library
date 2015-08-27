@@ -27,7 +27,7 @@
 
             //Act
             $test_book->save();
-            var_dump($test_book);
+
 
             //Assert
             $result = Book::getAll();
@@ -127,29 +127,29 @@
         }
 
 
-        // function testDelete()
-        // {
-        //     //Arrange
-        //     $book_name = "Intro to Art";
-        //     $test_book = new Book($book_name);
-        //     $test_book->save();
-        //
-        //     $book_name2 = "Everybody Poops";
-        //     $test_book2 = new Book($book_name2);
-        //     $test_book2->save();
-        //
-        //     $name = "Arty";
-        //     $test_author = new Author($name);
-        //     $test_author->save();
-        //
-        //
-        //     //Act
-        //     $test_book->addAuthor($test_author);
-        //     $test_book->delete();
-        //
-        //     //Assert
-        //     $this->assertEquals([], $test_author->getBooks());
-        // }
+        function testDelete()
+        {
+            //Arrange
+            $book_name = "Intro to Art";
+            $test_book = new Book($book_name);
+            $test_book->save();
+
+            $book_name2 = "Everybody Poops";
+            $test_book2 = new Book($book_name2);
+            $test_book2->save();
+
+            $name = "Arty";
+            $test_author = new Author($name);
+            $test_author->save();
+
+
+            //Act
+            $test_book->addAuthor($test_author);
+            $test_book->delete();
+
+            //Assert
+            $this->assertEquals([], $test_author->getBooks());
+        }
 
 
     }

@@ -38,7 +38,6 @@ class Patron
         foreach($returned_patrons as $patron) {
             $patron_name = $patron['name'];
             $id = $patron['id'];
-            var_dump($id);
             $new_patron = new Patron($patron_name, $id);
             array_push($patrons, $new_patron);
         }

@@ -25,7 +25,7 @@
 
             //Act
             $test_patron->save();
-            var_dump($test_patron);
+            
 
             //Assert
             $result = Patron::getAll();

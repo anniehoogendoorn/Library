@@ -25,7 +25,7 @@
 
             //Act
             $test_copy->save();
-            var_dump($test_copy);
+
 
             //Assert
             $result = Copy::getAll();
@@ -68,7 +68,21 @@
 
             //Assert
             $this->assertEquals([], $result);
+        }
 
+        function test_delete()
+        {
+            //Arrange
+            $book_id = 2;
+            $test_copy = new Copy($book_id);
+            $test_copy->save();
+
+            //Act
+            $test_copy->delete();
+            $result = Copy::getAll();
+
+            //Assert
+            $this->assertEquals([], $result);
         }
     }
 ?>

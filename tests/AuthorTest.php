@@ -90,6 +90,37 @@
             $this->assertEquals($test_author->getBooks(), [$test_book]);
         }
 
+        function test_update()
+        {
+            //Arrange
+            $name = "Steve";
+            $test_author = new Author($name);
+            $test_author->save();
+
+            //Act
+            $new_name = "Bob";
+            $test_author->update($new_name);
+            $result = $test_author->getName();
+
+            //Assert
+            $this->assertEquals($new_name, $result);
+        }
+
+        function test_delete()
+        {
+            //Arrange
+            $name = "Kurt Vonnegut";
+            $test_author = new Author($name);
+            $test_author->save();
+
+            //Act
+            $test_author->delete();
+            $result = Author::getAll();
+
+            //Assert
+            $this->assertEquals([], $result);
+        }
+
     }
 
 ?>
