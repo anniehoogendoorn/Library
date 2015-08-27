@@ -80,6 +80,14 @@
     //update book info
     $app->patch("/book/{id}", function($id) use ($app){
         $book = Book::find($id);
+        $book_copies = $book->getCopies();
+        $new_copies = $_POST['new_copies'];
+        if($new_copies < 1000){
+            foreach($book_copies as $copy){
+                $copy->delete();
+            }
+            $book->addCopies($new_copies);
+        }
         $book->update($_POST['title']);
         $authors = $book->getAuthors();
         return $app['twig']->render("book.html.twig", array('book' => $book, 'authors' => $authors, 'copies' => count($book->getCopies())));
